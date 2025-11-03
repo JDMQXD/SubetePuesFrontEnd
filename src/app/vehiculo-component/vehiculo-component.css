@@ -1,0 +1,102 @@
+.vehiculo-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.loading, .error, .sin-resultados {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+.filtros {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.filtro-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.filtro {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.filtro label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.filtro select,
+.filtro input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.botones-filtro {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+button.limpiar {
+  background-color: #e74c3c;
+}
+
+button.limpiar:hover {
+  background-color: #c0392b;
+}
+
+.vehiculos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.vehiculo-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.vehiculo-card:hover {
+  transform: translateY(-5px);
+}
+
+.vehiculo-card h4 {
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
