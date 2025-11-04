@@ -20,7 +20,6 @@ export class LoginComponent {
       next: (res) => {
         const role = this.authService.getRole();
 
-        // Redirigir según rol
         switch (role) {
           case 'ROLE_USER':
             this.router.navigate(['/reservas']);

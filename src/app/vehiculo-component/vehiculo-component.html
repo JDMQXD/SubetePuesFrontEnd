@@ -1,3 +1,11 @@
+<div class="top-bar">
+  <div class="logo" routerLink="/">🚗 SubetePues</div>
+  <div class="nav-buttons">
+    <button routerLink="/login">Login</button>
+  </div>
+</div>
+
+
 <div class="vehiculo-container">
   
   <!-- 🔄 Estado de carga -->
@@ -76,10 +84,8 @@
     </div>
 
     <div class="vehiculos-grid">
-      <!-- 🧱 Tarjeta de vehículo -->
       <div *ngFor="let v of vehiculosFiltrados" class="vehiculo-card">
-        <!-- ✅ Click en toda la tarjeta para ver detalles -->
-        <div class="vehiculo-info" routerLink="/reservas">
+        <div class="vehiculo-info" [routerLink]="['/detalles', v.idVehiculo]">
           <h4>{{ v.marca }} {{ v.modelo }}</h4>
           <p><strong>Tipo:</strong> {{ v.tipoVehiculo?.nombre }}</p>
           <p><strong>Categoría:</strong> {{ v.tipoVehiculo?.categoria?.nombre }}</p>
@@ -89,7 +95,7 @@
 
         <!-- 🚗 Botón de reservar -->
         <div class="vehiculo-actions">
-          <button (click)="irAReservas()">
+          <button [routerLink]="['/detalles', v.idVehiculo]">
             Reservar
           </button>
         </div>

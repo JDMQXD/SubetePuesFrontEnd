@@ -6,10 +6,12 @@ import { App } from './app';
 import { ReservasComponent } from './reservas-component/reservas-component';
 import { LoginComponent } from './login-component/login-component';
 import { PropietarioComponent } from './propietario-component/propietario-component';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { VehiculoComponent } from './vehiculo-component/vehiculo-component';
 import { RouterLink } from '@angular/router';
+import { DetalleVehiculoComponent } from './detalle-vehiculo-component/detalle-vehiculo-component';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -17,17 +19,25 @@ import { RouterLink } from '@angular/router';
     ReservasComponent,
     LoginComponent,
     PropietarioComponent,
-    VehiculoComponent
+    VehiculoComponent,
+    DetalleVehiculoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+    
   ],
   bootstrap: [App]
 })

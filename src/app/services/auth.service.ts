@@ -17,7 +17,7 @@ export class AuthService {
           // Guardar el token en localStorage
           localStorage.setItem('token', response.token);
           localStorage.setItem('rol', response.rol);
-          localStorage.setItem('usuario', response.usuario);
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
         })
       );
   }
@@ -33,6 +33,10 @@ export class AuthService {
   getRole(): string | null {
     return localStorage.getItem('rol');
   }
+  getUser(): any | null {
+  const userData = localStorage.getItem('usuario');
+  return userData ? JSON.parse(userData) : null;
+}
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');

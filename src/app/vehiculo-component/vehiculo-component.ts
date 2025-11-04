@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class VehiculoComponent{
 
+
   vehiculos: Vehiculo[] = [];
   vehiculosFiltrados: Vehiculo[] = [];
   

@@ -5,13 +5,16 @@ import { ReservasComponent } from './reservas-component/reservas-component';
 import { PropietarioComponent } from './propietario-component/propietario-component';
 import { RoleGuard } from './guards/role.guard';
 import { VehiculoComponent } from './vehiculo-component/vehiculo-component';
+import { DetalleVehiculoComponent } from './detalle-vehiculo-component/detalle-vehiculo-component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/vehiculos', pathMatch: 'full' },
   {path: 'vehiculos', component: VehiculoComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'reservas', component: ReservasComponent, canActivate: [RoleGuard], data: { role: 'ROLE_USER' } },
+  { path: 'reservas/:idVehiculo', component: ReservasComponent, canActivate: [RoleGuard], data: { role: 'ROLE_USER' } },
   { path: 'propietarios', component: PropietarioComponent, canActivate: [RoleGuard], data: { role: 'ROLE_PROPIETARIO' } },
+  { path: 'detalles/:id', component: DetalleVehiculoComponent, canActivate: [RoleGuard], data: { role: 'ROLE_USER' }},
 
   { path: '**', redirectTo: '/vehiculos' }
 ];
