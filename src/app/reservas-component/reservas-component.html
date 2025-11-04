@@ -1,1 +1,26 @@
-<h2>Reservas del usuario</h2>
+<div *ngIf="cargando">Cargando información del vehículo...</div>
+
+<div *ngIf="!cargando && vehiculo" class="form-container">
+  <h2>Reservar: {{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
+
+  <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()">
+    <div class="form-group">
+      <label for="fechaInicio">Fecha inicio</label>
+      <input type="date" id="fechaInicio" formControlName="fechaInicio" />
+    </div>
+
+    <div class="form-group">
+      <label for="fechaFin">Fecha fin</label>
+      <input type="date" id="fechaFin" formControlName="fechaFin" />
+    </div>
+
+    <div class="form-group">
+      <label for="lugarEntrega">Lugar de entrega</label>
+      <input type="text" id="lugarEntrega" formControlName="lugarEntrega" placeholder="Ej: Aeropuerto de Bogotá" />
+    </div>
+
+    <button type="submit" [disabled]="reservaForm.invalid" class="btn-guardar">
+      Confirmar reserva
+    </button>
+  </form>
+</div>

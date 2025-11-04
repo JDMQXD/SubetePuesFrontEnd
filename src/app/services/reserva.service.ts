@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,14 @@ import { Observable } from 'rxjs';
 export class ReservaService {
   private apiUrl = 'http://localhost:8080/user/reserva';
 
-  constructor(private http: HttpClient) {}
+ constructor(private http: HttpClient) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   getAllReservas(): Observable<any> {
     return this.http.get(`${this.apiUrl}/all`);

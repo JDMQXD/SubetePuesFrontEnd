@@ -11,7 +11,5 @@ export class reserva{
     fechaInicio: Date = new Date();
     fechaFin: Date = new Date();
     lugarEntrega: string = '';
-
     
-
 }
