@@ -3,11 +3,9 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login-component',
-  standalone: false,
-  templateUrl: './login-component.html',
-  styleUrl: './login-component.css',
-
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   correo = '';
@@ -17,10 +15,8 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.correo, this.password).subscribe({
-      next: (res) => {
+      next: () => {
         const role = this.authService.getRole();
-
-        // Redirigir según rol
         switch (role) {
           case 'ROLE_USER':
             this.router.navigate(['/reservas']);
@@ -32,13 +28,9 @@ export class LoginComponent {
             alert('Rol no autorizado');
             this.authService.logout();
             this.router.navigate(['/login']);
-            break;
         }
       },
-      error: (err) => {
-        alert('Credenciales incorrectas');
-        console.error(err);
-      }
+      error: () => alert('Credenciales incorrectas')
     });
   }
 }

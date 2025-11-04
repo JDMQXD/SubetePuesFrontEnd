@@ -1,5 +1,4 @@
 <div class="vehiculo-container">
-  
   <!-- 🔄 Estado de carga -->
   <div *ngIf="loading" class="loading">
     <p>Cargando vehículos...</p>
@@ -15,46 +14,58 @@
     <h3>Filtros de búsqueda</h3>
 
     <div class="filtro-row">
+      <!-- Marca -->
       <div class="filtro">
-        <label>Marca:</label>
-        <select [(ngModel)]="filtroMarca" (change)="aplicarFiltros()">
+        <label for="marca">Marca:</label>
+        <select id="marca" [(ngModel)]="filtroMarca" (change)="aplicarFiltros()">
           <option value="">Todas</option>
           <option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</option>
         </select>
       </div>
 
+      <!-- Modelo -->
       <div class="filtro">
-        <label>Modelo:</label>
-        <input type="text" [(ngModel)]="filtroModelo" (input)="aplicarFiltros()" placeholder="Buscar modelo...">
+        <label for="modelo">Modelo:</label>
+        <input
+          id="modelo"
+          type="text"
+          [(ngModel)]="filtroModelo"
+          (input)="aplicarFiltros()"
+          placeholder="Buscar modelo..."
+        />
       </div>
 
+      <!-- Ciudad -->
       <div class="filtro">
-        <label>Ciudad:</label>
-        <select [(ngModel)]="filtroCiudad" (change)="aplicarFiltros()">
+        <label for="ciudad">Ciudad:</label>
+        <select id="ciudad" [(ngModel)]="filtroCiudad" (change)="aplicarFiltros()">
           <option value="">Todas</option>
           <option *ngFor="let c of ciudades" [value]="c">{{ c }}</option>
         </select>
       </div>
 
+      <!-- Departamento -->
       <div class="filtro">
-        <label>Departamento:</label>
-        <select [(ngModel)]="filtroDepartamento" (change)="aplicarFiltros()">
+        <label for="departamento">Departamento:</label>
+        <select id="departamento" [(ngModel)]="filtroDepartamento" (change)="aplicarFiltros()">
           <option value="">Todos</option>
           <option *ngFor="let d of departamentos" [value]="d">{{ d }}</option>
         </select>
       </div>
 
+      <!-- Categoría -->
       <div class="filtro">
-        <label>Categoría:</label>
-        <select [(ngModel)]="filtroCategoria" (change)="aplicarFiltros()">
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" [(ngModel)]="filtroCategoria" (change)="aplicarFiltros()">
           <option value="">Todas</option>
           <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
         </select>
       </div>
 
+      <!-- Tipo -->
       <div class="filtro">
-        <label>Tipo:</label>
-        <select [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
           <option value="">Todos</option>
           <option *ngFor="let t of tipos" [value]="t">{{ t }}</option>
         </select>
@@ -79,7 +90,7 @@
       <!-- 🧱 Tarjeta de vehículo -->
       <div *ngFor="let v of vehiculosFiltrados" class="vehiculo-card">
         <!-- ✅ Click en toda la tarjeta para ver detalles -->
-        <div class="vehiculo-info" routerLink="/reservas">
+        <div class="vehiculo-info" [routerLink]="['/reservas']">
           <h4>{{ v.marca }} {{ v.modelo }}</h4>
           <p><strong>Tipo:</strong> {{ v.tipoVehiculo?.nombre }}</p>
           <p><strong>Categoría:</strong> {{ v.tipoVehiculo?.categoria?.nombre }}</p>
@@ -89,9 +100,7 @@
 
         <!-- 🚗 Botón de reservar -->
         <div class="vehiculo-actions">
-          <button (click)="irAReservas()">
-            Reservar
-          </button>
+          <button type="button" (click)="irAReservas()">Reservar</button>
         </div>
       </div>
     </div>

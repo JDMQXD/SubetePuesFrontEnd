@@ -1,0 +1,35 @@
+<div class="container">
+  <h2>Listado de Reservas</h2>
+
+  <div *ngIf="isLoading" class="loading">Cargando reservas...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="!isLoading && reservas.length > 0" class="reservas-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cliente</th>
+      <th>Vehículo</th>
+      <th>Fecha Inicio</th>
+      <th>Fecha Fin</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let reserva of reservas">
+      <td>{{ reserva.id }}</td>
+      <td>{{ reserva.cliente?.nombre }}</td>
+      <td>{{ reserva.vehiculo?.modelo }}</td>
+      <td>{{ reserva.fechaInicio | date }}</td>
+      <td>{{ reserva.fechaFin | date }}</td>
+      <td>
+        <button (click)="eliminarReserva(reserva.id)" class="btn-eliminar">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!isLoading && reservas.length === 0" class="sin-datos">
+    No hay reservas registradas.
+  </div>
+</div>
