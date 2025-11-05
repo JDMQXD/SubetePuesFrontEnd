@@ -23,7 +23,7 @@ export class ReservasListComponent implements OnInit {
         this.reservas = data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: () => {
         this.errorMessage = 'Error al cargar las reservas';
         this.isLoading = false;
       }
