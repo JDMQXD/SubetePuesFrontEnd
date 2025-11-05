@@ -37,23 +37,40 @@
     <form (ngSubmit)="guardarVehiculo()">
       <div class="mb-3">
         <label>Marca</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.marca" name="marca" class="form-control" required>
+        <input [(ngModel)]="vehiculoSeleccionado!.marca" name="marca" class="form-control" required />
       </div>
 
       <div class="mb-3">
         <label>Modelo</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.modelo" name="modelo" class="form-control" required>
+        <input [(ngModel)]="vehiculoSeleccionado!.modelo" name="modelo" class="form-control" required />
       </div>
 
-      <div class="mb-3">
-        <label>Especificación</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.espeficicacion" name="espeficicacion" class="form-control">
-      </div>
+      <select [(ngModel)]="vehiculoSeleccionado!.transmision" name="transmision" class="form-control" required>
+  <option *ngFor="let t of transmisiones" [ngValue]="t">{{ t.nombre }}</option>
+</select>
 
-      <div class="mb-3">
-        <label>Estado de Cuenta</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.estadoDeCuenta" name="estadoDeCuenta" class="form-control">
-      </div>
+<select [(ngModel)]="vehiculoSeleccionado!.tipoVehiculo" name="tipoVehiculo" class="form-control" required>
+  <option *ngFor="let t of tiposVehiculo" [ngValue]="t">{{ t.nombre }}</option>
+</select>
+
+<select [(ngModel)]="vehiculoSeleccionado!.ubicacion" name="ubicacion" class="form-control" required>
+  <option *ngFor="let c of ciudades" [ngValue]="c">{{ c.nombre }}</option>
+</select>
+
+<select [(ngModel)]="vehiculoSeleccionado!.disponibilidad" name="disponibilidad" class="form-control" required>
+  <option *ngFor="let d of disponibilidades" [ngValue]="d">{{ d.nombre }}</option>
+</select>
+<div class="mb-3">
+  <label>Especificación</label>
+  <textarea
+    [(ngModel)]="vehiculoSeleccionado!.especificacion"
+    name="especificacion"
+    class="form-control"
+    placeholder="Ej: Sedan, color gris, 4 puertas, aire acondicionado..."
+    required
+  ></textarea>
+</div>
+
 
       <button type="submit" class="btn btn-success">Guardar</button>
       <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>

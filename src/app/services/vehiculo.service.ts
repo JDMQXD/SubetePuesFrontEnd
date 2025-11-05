@@ -18,10 +18,10 @@ export class VehiculoService {
 
 
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
   }
 
@@ -38,7 +38,8 @@ export class VehiculoService {
 
 
   crearVehiculo(vehiculo: Vehiculo): Observable<Vehiculo> {
-    return this.http.post<Vehiculo>(`${this.baseUrl}/propietario/crear`, vehiculo, { headers: this.getAuthHeaders() })
+    return this.http.post<Vehiculo>(`${this.baseUrl}/propietario/crear`, vehiculo, { 
+      headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError<Vehiculo>('crearVehiculo')));
   }
 

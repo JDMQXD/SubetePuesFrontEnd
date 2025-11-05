@@ -27,6 +27,9 @@ export class LoginComponent {
           case 'ROLE_PROPIETARIO':
             this.router.navigate(['/propietarios']);
             break;
+          case 'ROLE_ADMIN':
+            this.router.navigate(['/administrador'])
+            break;
           default:
             alert('Rol no autorizado');
             this.authService.logout();

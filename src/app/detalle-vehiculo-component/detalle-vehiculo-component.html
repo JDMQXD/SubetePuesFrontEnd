@@ -4,13 +4,12 @@
 <div *ngIf="vehiculo && !loading" class="detalle-container">
   <h2>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
 
-  <p><strong>ID:</strong> {{ vehiculo.idVehiculo }}</p>
   <p><strong>Transmisión:</strong> {{ vehiculo.transmision?.nombre }}</p>
   <p><strong>Tipo:</strong> {{ vehiculo.tipoVehiculo?.nombre }}</p>
   <p><strong>Categoría:</strong> {{ vehiculo.tipoVehiculo?.categoria?.nombre }}</p>
   <p><strong>Ciudad:</strong> {{ vehiculo.ubicacion?.nombre }}</p>
   <p><strong>Departamento:</strong> {{ vehiculo.ubicacion?.departamento?.nombre }}</p>
-  <p><strong>Especificaciones:</strong> {{ vehiculo.espeficicacion }}</p>
+  <p><strong>Especificaciones:</strong> {{ vehiculo.especificacion }}</p>
   <p><strong>Fecha de registro:</strong> {{ vehiculo.fechaRegistro | date }}</p>
 
   <button class="btn-reservar" (click)="reservarVehiculo()">

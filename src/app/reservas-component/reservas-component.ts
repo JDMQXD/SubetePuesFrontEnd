@@ -54,35 +54,39 @@ export class ReservasComponent implements OnInit {
   }
 
   enviarReserva(): void {
-  const usuario = this.authService.getUser(); // ✅ ahora es un objeto con idUsuario, nombre, etc.
+    const usuario = this.authService.getUser(); // objeto con idUsuario, nombre, etc.
 
-  if (!usuario || !usuario.idUsuario) {
-    alert('No se pudo obtener el usuario. Inicia sesión nuevamente.');
-    this.router.navigate(['/login']);
-    return;
-  }
-
-  const nuevaReserva: reserva = {
-    idReserva: '',
-    servicio: undefined as any, // o puedes asignarlo si ya lo tienes
-    Vehiculo: this.vehiculo, // asegúrate de recibirlo desde detalle-vehiculo
-    usuario: { idUsuario: usuario.idUsuario } as any, // 👈 solo se envía el ID
-    fechaReserva: new Date(),
-    fechaInicio: this.reservaForm.value.fechaInicio,
-    fechaFin: this.reservaForm.value.fechaFin,
-    lugarEntrega: this.reservaForm.value.lugarEntrega
-  };
-
-  this.reservaService.createReserva(nuevaReserva).subscribe({
-    next: (res) => {
-      alert('Reserva creada exitosamente.');
-      this.router.navigate(['/']);
-    },
-    error: (err) => {
-      console.error('Error al crear la reserva:', err);
-      alert('No se pudo crear la reserva.');
+    if (!usuario || !usuario.idUsuario) {
+      alert('No se pudo obtener el usuario. Inicia sesión nuevamente.');
+      this.router.navigate(['/login']);
+      return;
     }
-  });
-}
 
+    // Enviar solo la referencia al vehículo (ajusta el nombre si tu API espera otro)
+    const nuevaReserva: any = {
+      idReserva: '',
+      servicio: undefined,
+      // Cambiado a 'vehiculo' en minúscula y enviando solo { idVehiculo: ... }
+      vehiculo: { idVehiculo: this.vehiculo?.idVehiculo },
+      usuario: { idUsuario: usuario.idUsuario },
+      fechaReserva: new Date(),
+      fechaInicio: this.reservaForm.value.fechaInicio,
+      fechaFin: this.reservaForm.value.fechaFin,
+      lugarEntrega: this.reservaForm.value.lugarEntrega
+    };
+
+    // DEBUG: ver qué se está enviando exactamente
+    console.log('Payload reserva a enviar:', nuevaReserva);
+
+    this.reservaService.createReserva(nuevaReserva).subscribe({
+      next: (res) => {
+        alert('Reserva creada exitosamente.');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Error al crear la reserva:', err);
+        alert('No se pudo crear la reserva.');
+      }
+    });
+  }
 }
