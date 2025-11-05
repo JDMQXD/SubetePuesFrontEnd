@@ -14,6 +14,5 @@ export class Vehiculo {
     modelo: string = '';
     marca: string = '';
     espeficicacion: string = '';
-    estadoDeCuenta: string = '';
     fechaRegistro: Date = new Date();
 }

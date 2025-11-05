@@ -37,22 +37,40 @@
     <form (ngSubmit)="guardarVehiculo()">
       <div class="mb-3">
         <label>Marca</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.marca" name="marca" class="form-control" required>
+        <input [(ngModel)]="vehiculoSeleccionado!.marca" name="marca" class="form-control" required />
       </div>
 
       <div class="mb-3">
         <label>Modelo</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.modelo" name="modelo" class="form-control" required>
+        <input [(ngModel)]="vehiculoSeleccionado!.modelo" name="modelo" class="form-control" required />
       </div>
 
       <div class="mb-3">
-        <label>Especificación</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.espeficicacion" name="espeficicacion" class="form-control">
+        <label>Transmisión</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.transmision.idTransmision" name="transmision" class="form-control" required>
+          <option *ngFor="let t of transmisiones" [value]="t.idTransmision">{{ t.nombre }}</option>
+        </select>
       </div>
 
       <div class="mb-3">
-        <label>Estado de Cuenta</label>
-        <input [(ngModel)]="vehiculoSeleccionado!.estadoDeCuenta" name="estadoDeCuenta" class="form-control">
+        <label>Tipo de Vehículo</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.tipoVehiculo.idTipoVehiculo" name="tipoVehiculo" class="form-control" required>
+          <option *ngFor="let t of tiposVehiculo" [value]="t.idTipoVehiculo">{{ t.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Ciudad</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.ubicacion.idCiudad" name="ubicacion" class="form-control" required>
+          <option *ngFor="let c of ciudades" [value]="c.idCiudad">{{ c.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label>Disponibilidad</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.disponibilidad.idDisponibilidad" name="disponibilidad" class="form-control" required>
+          <option *ngFor="let d of disponibilidades" [value]="d.idDisponibilidad">{{ d.nombre }}</option>
+        </select>
       </div>
 
       <button type="submit" class="btn btn-success">Guardar</button>
