@@ -12,6 +12,8 @@ import { VehiculoComponent } from './vehiculo-component/vehiculo-component';
 import { RouterLink } from '@angular/router';
 import { DetalleVehiculoComponent } from './detalle-vehiculo-component/detalle-vehiculo-component';
 import { AuthInterceptor } from './auth.interceptor';
+import { AdministradorComponent } from './administrador-component/administrador-component';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { AuthInterceptor } from './auth.interceptor';
     LoginComponent,
     PropietarioComponent,
     VehiculoComponent,
-    DetalleVehiculoComponent
+    DetalleVehiculoComponent,
+    AdministradorComponent,
   ],
   imports: [
     BrowserModule,
