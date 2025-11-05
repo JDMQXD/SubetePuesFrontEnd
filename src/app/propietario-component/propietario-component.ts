@@ -9,6 +9,7 @@ import { Transmision } from '../clases/transmision';
 import { TipoVehiculo } from '../clases/tipoVehiculo';
 import { Ciudad } from '../clases/ciudad';
 import { Disponibilidad } from '../clases/disponibilidad';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-propietario-component',
@@ -31,7 +32,8 @@ export class PropietarioComponent implements OnInit {
     private transmisionService: TransmisionService,
     private tipoVehiculoService: TipoVehiculoService,
     private ciudadService: CiudadService,
-    private disponibilidadService: DisponibilidadService
+    private disponibilidadService: DisponibilidadService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class PropietarioComponent implements OnInit {
   }
 
   cargarVehiculos(): void {
+    console.log('TOKEN ENVIADO:', localStorage.getItem('rol'));
     this.vehiculoService.getVehiculosPropietario().subscribe({
       next: (data) => (this.vehiculos = data),
       error: (err) => console.error('Error al cargar vehículos', err),
@@ -46,10 +49,19 @@ export class PropietarioComponent implements OnInit {
   }
 
   nuevoVehiculo(): void {
-    this.vehiculoSeleccionado = new Vehiculo();
-    this.modoEdicion = true;
-    this.cargarListas();
-  }
+  this.vehiculoSeleccionado = {
+    idVehiculo: '',
+    marca: '',
+    modelo: '',
+    transmision: new Transmision(),
+    tipoVehiculo: new TipoVehiculo(),
+    ubicacion: new Ciudad(),
+    disponibilidad: new Disponibilidad()
+  } as Vehiculo;
+  this.modoEdicion = true;
+  this.cargarListas();
+}
+
 
   seleccionarVehiculo(vehiculo: Vehiculo): void {
     this.vehiculoSeleccionado = { ...vehiculo };
@@ -65,34 +77,46 @@ export class PropietarioComponent implements OnInit {
   }
 
   guardarVehiculo(): void {
-    if (!this.vehiculoSeleccionado) return;
+  if (!this.vehiculoSeleccionado) return;
 
-    // Solo enviar los IDs, no los objetos completos
-    this.vehiculoSeleccionado.transmision = { idTransmision: this.vehiculoSeleccionado.transmision.idTransmision } as Transmision;
-    this.vehiculoSeleccionado.tipoVehiculo = { idTipoVehiculo: this.vehiculoSeleccionado.tipoVehiculo.idTipoVehiculo } as TipoVehiculo;
-    this.vehiculoSeleccionado.ubicacion = { idCiudad: this.vehiculoSeleccionado.ubicacion.idCiudad } as Ciudad;
-    this.vehiculoSeleccionado.disponibilidad = { idDisponibilidad: this.vehiculoSeleccionado.disponibilidad.idDisponibilidad } as Disponibilidad;
+  const fechaActual = new Date();
 
-    if (this.vehiculoSeleccionado.idVehiculo) {
-      // actualizar
-      this.vehiculoService.actualizarVehiculo(this.vehiculoSeleccionado.idVehiculo, this.vehiculoSeleccionado).subscribe({
-        next: () => {
-          this.cargarVehiculos();
-          this.cancelar();
-        },
-        error: (err) => console.error('Error al actualizar', err),
-      });
-    } else {
-      // crear
-      this.vehiculoService.crearVehiculo(this.vehiculoSeleccionado).subscribe({
-        next: () => {
-          this.cargarVehiculos();
-          this.cancelar();
-        },
-        error: (err) => console.error('Error al crear', err),
-      });
-    }
+  // ✅ Recuperar el usuario del localStorage
+  const usuarioData = localStorage.getItem('usuario');
+  const usuarioParseado = usuarioData ? JSON.parse(usuarioData) : null;
+  const idUsuario = usuarioParseado?.idUsuario || '';
+
+  if (!idUsuario) {
+    console.error('No se encontró el ID del usuario en el localStorage');
+    return;
   }
+
+  // ✅ Construir el objeto con los datos completos
+  const vehiculoAEnviar: Vehiculo = {
+    ...this.vehiculoSeleccionado,
+    idVehiculo: this.vehiculoSeleccionado.idVehiculo || '',
+    especificacion: this.vehiculoSeleccionado.especificacion,
+    fechaRegistro: fechaActual,
+    usuario: {
+      idUsuario: idUsuario
+    } as any
+  };
+
+  console.log('🚗 Enviando vehículo:', vehiculoAEnviar);
+
+  this.vehiculoService.crearVehiculo(vehiculoAEnviar).subscribe({
+    next: () => {
+      alert('Vehículo creado correctamente');
+      this.cargarVehiculos();
+      this.cancelar();
+    },
+    error: (err) => console.error('❌ Error al crear vehículo', err),
+  });
+}
+
+
+
+
 
   eliminarVehiculo(idVehiculo: string): void {
     if (confirm('¿Seguro que deseas eliminar este vehículo?')) {

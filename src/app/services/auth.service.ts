@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
+
+interface TokenPayload {
+  sub: string; // correo o idUsuario, según lo que guardes
+  role: string;
+  exp: number;
+  iat: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +49,17 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  obtenerUsuarioDelToken(): TokenPayload | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      return jwtDecode<TokenPayload>(token);
+    } catch (e) {
+      console.error('Error al decodificar token', e);
+      return null;
+    }
+  }
+
 }

@@ -13,6 +13,6 @@ export class Vehiculo {
     disponibilidad: Disponibilidad = new Disponibilidad();
     modelo: string = '';
     marca: string = '';
-    espeficicacion: string = '';
+    especificacion: string = '';
     fechaRegistro: Date = new Date();
 }
