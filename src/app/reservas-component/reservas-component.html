@@ -19,6 +19,16 @@
       <input type="text" id="lugarEntrega" formControlName="lugarEntrega" placeholder="Ej: Aeropuerto de Bogotá" />
     </div>
 
+    <div class="form-group">
+      <label for="servicio">Servicio</label>
+      <select id="servicio" formControlName="servicio">
+        <option value="">Seleccione un servicio</option>
+        <option *ngFor="let s of servicios" [value]="s.idServicio">
+          {{ s.nombreServicio }} - ${{ s.costo }}
+        </option>
+      </select>
+    </div>
+
     <button type="submit" [disabled]="reservaForm.invalid" class="btn-guardar">
       Confirmar reserva
     </button>

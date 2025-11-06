@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VehiculoService } from '../services/vehiculo.service';
 import { AuthService } from '../services/auth.service';
 import { reserva } from '../clases/reserva';
+import { ServicioService } from '../services/servicio.service';
+import { servicio } from '../clases/servicio';
 
 @Component({
   selector: 'app-reservas-component',
@@ -18,6 +20,7 @@ export class ReservasComponent implements OnInit {
   vehiculo!: Vehiculo;
   idVehiculo!: string;
   cargando = true;
+  servicios: servicio[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -25,12 +28,14 @@ export class ReservasComponent implements OnInit {
     private vehiculoService: VehiculoService,
     private reservaService: ReservaService,
     private authService: AuthService,
+    private servicioService: ServicioService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.idVehiculo = this.route.snapshot.paramMap.get('idVehiculo') || '';
     this.crearFormulario();
+    this.cargarServicios();
 
     // Cargar datos del vehículo seleccionado
     this.vehiculoService.getVehiculoById(this.idVehiculo).subscribe({
@@ -43,13 +48,26 @@ export class ReservasComponent implements OnInit {
         this.cargando = false;
       }
     });
+    
   }
 
   crearFormulario(): void {
     this.reservaForm = this.fb.group({
       fechaInicio: ['', Validators.required],
       fechaFin: ['', Validators.required],
-      lugarEntrega: ['', [Validators.required, Validators.minLength(3)]]
+      lugarEntrega: ['', [Validators.required, Validators.minLength(3)]],
+      servicio:['',Validators.required]
+    });
+  }
+
+  cargarServicios(): void {
+    this.servicioService.getAll().subscribe({
+      next: (data) => {
+        this.servicios = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar servicios', err);
+      }
     });
   }
 
@@ -65,7 +83,7 @@ export class ReservasComponent implements OnInit {
     // Enviar solo la referencia al vehículo (ajusta el nombre si tu API espera otro)
     const nuevaReserva: any = {
       idReserva: '',
-      servicio: undefined,
+       servicio: { idServicio: this.reservaForm.value.servicio },
       // Cambiado a 'vehiculo' en minúscula y enviando solo { idVehiculo: ... }
       vehiculo: { idVehiculo: this.vehiculo?.idVehiculo },
       usuario: { idUsuario: usuario.idUsuario },
