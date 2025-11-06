@@ -45,7 +45,7 @@ export class DetalleVehiculoComponent implements OnInit {
   const role = this.authService.getRole();
 
   if (token && role === 'ROLE_USER') {
-    this.router.navigate(['/reservas', this.vehiculo?.idVehiculo]); // ✅ pasa el ID del vehículo
+    this.router.navigate(['/reservas', this.vehiculo?.idVehiculo]); 
   } else {
     alert('Debes iniciar sesión como usuario para hacer una reserva.');
     this.router.navigate(['/login']);

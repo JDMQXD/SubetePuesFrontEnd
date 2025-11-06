@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Mis Vehículos</h2>
 
-  <!-- LISTA -->
+
   <div *ngIf="!modoEdicion">
     <button (click)="nuevoVehiculo()" class="btn btn-primary mb-3">+ Nuevo Vehículo</button>
 
@@ -30,7 +30,6 @@
     </table>
   </div>
 
-  <!-- FORMULARIO -->
   <div *ngIf="modoEdicion">
     <h3>{{ vehiculoSeleccionado?.idVehiculo ? 'Editar Vehículo' : 'Nuevo Vehículo' }}</h3>
 
@@ -44,22 +43,32 @@
         <label>Modelo</label>
         <input [(ngModel)]="vehiculoSeleccionado!.modelo" name="modelo" class="form-control" required />
       </div>
+      <div class="mb-3">
+        <label>Transmision</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.transmision" name="transmision" class="form-control" required>
+        <option *ngFor="let t of transmisiones" [ngValue]="t">{{ t.nombre }}</option>
+      </select>
+      </div>
 
-      <select [(ngModel)]="vehiculoSeleccionado!.transmision" name="transmision" class="form-control" required>
-  <option *ngFor="let t of transmisiones" [ngValue]="t">{{ t.nombre }}</option>
-</select>
+      <div class="mb-3">
+        <label>Tipo de vehiculo</label>
+        <select [(ngModel)]="vehiculoSeleccionado!.tipoVehiculo" name="tipoVehiculo" class="form-control" required>
+        <option *ngFor="let t of tiposVehiculo" [ngValue]="t">{{ t.nombre }}</option>
+      </select>
+      </div>
+      <div class="mb-3">
+        <label>Ubicacion del vehiculo</label>
+          <select [(ngModel)]="vehiculoSeleccionado!.ubicacion" name="ubicacion" class="form-control" required>
+            <option *ngFor="let c of ciudades" [ngValue]="c">{{ c.nombre }}</option>
+          </select>
+      </div>
 
-<select [(ngModel)]="vehiculoSeleccionado!.tipoVehiculo" name="tipoVehiculo" class="form-control" required>
-  <option *ngFor="let t of tiposVehiculo" [ngValue]="t">{{ t.nombre }}</option>
-</select>
-
-<select [(ngModel)]="vehiculoSeleccionado!.ubicacion" name="ubicacion" class="form-control" required>
-  <option *ngFor="let c of ciudades" [ngValue]="c">{{ c.nombre }}</option>
-</select>
-
-<select [(ngModel)]="vehiculoSeleccionado!.disponibilidad" name="disponibilidad" class="form-control" required>
-  <option *ngFor="let d of disponibilidades" [ngValue]="d">{{ d.nombre }}</option>
-</select>
+      <div class="mb-3">
+        <label>Disponibilidad</label>
+          <select [(ngModel)]="vehiculoSeleccionado!.disponibilidad" name="disponibilidad" class="form-control" required>
+            <option *ngFor="let d of disponibilidades" [ngValue]="d">{{ d.nombre }}</option>
+          </select>
+      </div>
 <div class="mb-3">
   <label>Especificación</label>
   <textarea

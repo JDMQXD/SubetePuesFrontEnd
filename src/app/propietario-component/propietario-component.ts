@@ -10,6 +10,7 @@ import { TipoVehiculo } from '../clases/tipoVehiculo';
 import { Ciudad } from '../clases/ciudad';
 import { Disponibilidad } from '../clases/disponibilidad';
 import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-propietario-component',
@@ -81,7 +82,6 @@ export class PropietarioComponent implements OnInit {
 
   const fechaActual = new Date();
 
-  // ✅ Recuperar el usuario del localStorage
   const usuarioData = localStorage.getItem('usuario');
   const usuarioParseado = usuarioData ? JSON.parse(usuarioData) : null;
   const idUsuario = usuarioParseado?.idUsuario || '';
@@ -91,7 +91,6 @@ export class PropietarioComponent implements OnInit {
     return;
   }
 
-  // ✅ Construir el objeto con los datos completos
   const vehiculoAEnviar: Vehiculo = {
     ...this.vehiculoSeleccionado,
     idVehiculo: this.vehiculoSeleccionado.idVehiculo || '',
@@ -102,16 +101,33 @@ export class PropietarioComponent implements OnInit {
     } as any
   };
 
-  console.log('🚗 Enviando vehículo:', vehiculoAEnviar);
+  console.log('nviando vehículo:', vehiculoAEnviar);
 
-  this.vehiculoService.crearVehiculo(vehiculoAEnviar).subscribe({
-    next: () => {
-      alert('Vehículo creado correctamente');
-      this.cargarVehiculos();
-      this.cancelar();
-    },
-    error: (err) => console.error('❌ Error al crear vehículo', err),
-  });
+  Swal.fire({
+      title: '¿Seguro quieres guardar el vehiculo?',
+      text: 'Revisa los datos primero!.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, guardar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#198754',
+      cancelButtonColor: '#dc3545', 
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.vehiculoService.crearVehiculo(vehiculoAEnviar).subscribe({
+          next: () => {
+            Swal.fire('guardado', 'El vehiculo se guardo correctamente', 'success');
+            this.cargarVehiculos();
+            this.cancelar();
+          },
+          error: (err) => {
+            console.error(' Error al elminar la reserva', err);
+            Swal.fire('Error', 'No se pudo guardar el vehiculo.', 'error');
+          }
+        });
+      }
+    });
+  
 }
 
 
@@ -119,18 +135,29 @@ export class PropietarioComponent implements OnInit {
 
 
   eliminarVehiculo(idVehiculo: string): void {
-    if (confirm('¿Seguro que deseas eliminar este vehículo?')) {
-      this.vehiculoService.eliminarVehiculo(idVehiculo).subscribe({
-        next: () => {
-          alert('Vehículo eliminado correctamente');
-          this.cargarVehiculos();
-        },
-        error: (err) => {
-          console.error('Error al eliminar vehículo', err);
-          alert('Error al eliminar vehículo');
-        },
-      });
-    }
+    
+    Swal.fire({
+      title: '¿Seguro quieres eliminar el vehiculo?',
+      text: 'Se eliminara el vehiculo para siempre.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#dc3545', 
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.vehiculoService.eliminarVehiculo(idVehiculo).subscribe({
+          next: () => {
+            Swal.fire('Eliminado', 'El vehiculo se elimino correctamente.', 'success');
+            this.cargarVehiculos();
+          },
+          error: (err) => {
+            console.error(' Error al elminar el vehiculo', err);
+            Swal.fire('Error', 'No se pudo eliminar el vehiculo.', 'error');
+          }
+        });
+      }
+    });
   }
 
   cancelar(): void {

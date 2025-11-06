@@ -123,7 +123,6 @@ export class VehiculoComponent{
     const token = this.authService.getToken();
     const role = this.authService.getRole();
 
-    // ✅ Verificar si está logueado y tiene el rol correcto
     if (token && role === 'ROLE_USER') {
       this.router.navigate(['/reservas']);
     } else {

@@ -1,24 +1,18 @@
-<div class="top-bar">
-  <div class="logo" routerLink="/">🚗 SubetePues</div>
-  <div class="nav-buttons">
-    <button routerLink="/login">Login</button>
-  </div>
-</div>
 
 
 <div class="vehiculo-container">
   
-  <!-- 🔄 Estado de carga -->
+
   <div *ngIf="loading" class="loading">
     <p>Cargando vehículos...</p>
   </div>
 
-  <!-- ⚠️ Mensaje de error -->
+
   <div *ngIf="error" class="error">
     {{ error }}
   </div>
 
-  <!-- 🧩 Filtros -->
+
   <div class="filtros" *ngIf="!loading && !error">
     <h3>Filtros de búsqueda</h3>
 
@@ -75,7 +69,7 @@
     </div>
   </div>
 
-  <!-- 🚘 Lista de vehículos -->
+
   <div *ngIf="!loading && !error">
     <h3>Vehículos disponibles ({{ vehiculosFiltrados.length }})</h3>
 
@@ -94,7 +88,7 @@
           <p><strong>Diponibilidad:</strong>{{ v.disponibilidad?.nombre }}</p>
         </div>
 
-        <!-- 🚗 Botón de reservar -->
+
         <div class="vehiculo-actions">
           <button [routerLink]="['/detalles', v.idVehiculo]">
             Reservar

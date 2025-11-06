@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { reserva } from '../clases/reserva';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class ReservaService {
 
   createReserva(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}user/reserva`, data);
+  }
+
+  updateReserva(id: string, reserva: reserva): Observable<reserva> {
+    return this.http.put<reserva>(`${this.apiUrl}admin/reserva/${id}`, reserva);
   }
 
   deleteReserva(id: string): Observable<any> {

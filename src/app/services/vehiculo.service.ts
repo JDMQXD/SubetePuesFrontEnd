@@ -45,7 +45,8 @@ export class VehiculoService {
 
 
   actualizarVehiculo(id: string, vehiculo: Vehiculo): Observable<Vehiculo> {
-    return this.http.put<Vehiculo>(`${this.baseUrl}/propietario/update/${id}`, vehiculo, { headers: this.getAuthHeaders() })
+    return this.http.put<Vehiculo>(`${this.baseUrl}/propietario/update/${id}`, vehiculo, { 
+      headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError<Vehiculo>('actualizarVehiculo')));
   }
 

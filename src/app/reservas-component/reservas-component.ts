@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VehiculoService } from '../services/vehiculo.service';
 import { AuthService } from '../services/auth.service';
 import { reserva } from '../clases/reserva';
+import { ServicioService } from '../services/servicio.service';
+import { servicio } from '../clases/servicio';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservas-component',
@@ -18,6 +21,7 @@ export class ReservasComponent implements OnInit {
   vehiculo!: Vehiculo;
   idVehiculo!: string;
   cargando = true;
+  servicios: servicio[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -25,14 +29,16 @@ export class ReservasComponent implements OnInit {
     private vehiculoService: VehiculoService,
     private reservaService: ReservaService,
     private authService: AuthService,
+    private servicioService: ServicioService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.idVehiculo = this.route.snapshot.paramMap.get('idVehiculo') || '';
     this.crearFormulario();
+    this.cargarServicios();
 
-    // Cargar datos del vehículo seleccionado
+
     this.vehiculoService.getVehiculoById(this.idVehiculo).subscribe({
       next: (data) => {
         this.vehiculo = data;
@@ -43,49 +49,86 @@ export class ReservasComponent implements OnInit {
         this.cargando = false;
       }
     });
+    
   }
 
   crearFormulario(): void {
     this.reservaForm = this.fb.group({
       fechaInicio: ['', Validators.required],
       fechaFin: ['', Validators.required],
-      lugarEntrega: ['', [Validators.required, Validators.minLength(3)]]
+      lugarEntrega: ['', [Validators.required, Validators.minLength(3)]],
+      servicio:['',Validators.required]
+    });
+  }
+
+  cargarServicios(): void {
+    this.servicioService.getAll().subscribe({
+      next: (data) => {
+        this.servicios = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar servicios', err);
+      }
     });
   }
 
   enviarReserva(): void {
-    const usuario = this.authService.getUser(); // objeto con idUsuario, nombre, etc.
+    const usuario = this.authService.getUser();
 
     if (!usuario || !usuario.idUsuario) {
-      alert('No se pudo obtener el usuario. Inicia sesión nuevamente.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Sesión expirada',
+        text: 'Debes iniciar sesión nuevamente.',
+      });
       this.router.navigate(['/login']);
       return;
     }
 
-    // Enviar solo la referencia al vehículo (ajusta el nombre si tu API espera otro)
     const nuevaReserva: any = {
       idReserva: '',
-      servicio: undefined,
-      // Cambiado a 'vehiculo' en minúscula y enviando solo { idVehiculo: ... }
+      servicio: { idServicio: this.reservaForm.value.servicio },
       vehiculo: { idVehiculo: this.vehiculo?.idVehiculo },
       usuario: { idUsuario: usuario.idUsuario },
       fechaReserva: new Date(),
       fechaInicio: this.reservaForm.value.fechaInicio,
       fechaFin: this.reservaForm.value.fechaFin,
-      lugarEntrega: this.reservaForm.value.lugarEntrega
+      lugarEntrega: this.reservaForm.value.lugarEntrega,
     };
 
-    // DEBUG: ver qué se está enviando exactamente
-    console.log('Payload reserva a enviar:', nuevaReserva);
-
-    this.reservaService.createReserva(nuevaReserva).subscribe({
-      next: (res) => {
-        alert('Reserva creada exitosamente.');
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('Error al crear la reserva:', err);
-        alert('No se pudo crear la reserva.');
+    Swal.fire({
+      title: '¿Confirmar reserva?',
+      text: 'Verifica que los datos sean correctos antes de continuar.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, reservar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#198754',
+      cancelButtonColor: '#dc3545', 
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservaService.createReserva(nuevaReserva).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Reserva creada',
+              text: 'Tu reserva fue creada exitosamente.',
+              confirmButtonColor: '#198754',
+              timer: 2500,
+              timerProgressBar: true,
+            });
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            console.error('Error al crear la reserva:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo crear la reserva. Intenta de nuevo.',
+              confirmButtonColor: '#dc3545',
+            });
+          },
+        });
       }
     });
   }

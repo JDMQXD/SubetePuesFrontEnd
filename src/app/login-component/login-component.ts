@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login-component',
@@ -38,7 +39,11 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        alert('Credenciales incorrectas');
+        Swal.fire({
+        icon: 'error',
+        title: 'Credenciales incorrectas',
+        text: 'Intenta iniciar sesión nuevamente.',
+      });
         console.error(err);
       }
     });
