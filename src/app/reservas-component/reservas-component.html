@@ -1,36 +1,91 @@
-<div *ngIf="cargando">Cargando información del vehículo...</div>
+<div *ngIf="cargando" class="text-center mt-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="mt-2">Cargando información del vehículo...</p>
+</div>
 
-<div *ngIf="!cargando && vehiculo" class="form-container">
-  <h2>Reservar: {{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
+<div *ngIf="!cargando && vehiculo" class="container mt-4">
+  <div class="card shadow-lg p-4 rounded-4">
+    <h3 class="mb-4 text-center">
+      Reservar: {{ vehiculo.marca }} {{ vehiculo.modelo }}
+    </h3>
 
-  <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()">
-    <div class="form-group">
-      <label for="fechaInicio">Fecha inicio</label>
-      <input type="date" id="fechaInicio" formControlName="fechaInicio" />
-    </div>
+    <form [formGroup]="reservaForm" (ngSubmit)="enviarReserva()" class="row g-3">
+      
+      <div class="col-md-6">
+        <label for="fechaInicio" class="form-label">Fecha inicio</label>
+        <input
+          type="date"
+          id="fechaInicio"
+          formControlName="fechaInicio"
+          class="form-control"
+          [ngClass]="{'is-invalid': reservaForm.get('fechaInicio')?.invalid && reservaForm.get('fechaInicio')?.touched}"
+        />
+        <div class="invalid-feedback">
+          Ingrese una fecha válida.
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="fechaFin">Fecha fin</label>
-      <input type="date" id="fechaFin" formControlName="fechaFin" />
-    </div>
+      
+      <div class="col-md-6">
+        <label for="fechaFin" class="form-label">Fecha fin</label>
+        <input
+          type="date"
+          id="fechaFin"
+          formControlName="fechaFin"
+          class="form-control"
+          [ngClass]="{'is-invalid': reservaForm.get('fechaFin')?.invalid && reservaForm.get('fechaFin')?.touched}"
+        />
+        <div class="invalid-feedback">
+          Ingrese una fecha válida.
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="lugarEntrega">Lugar de entrega</label>
-      <input type="text" id="lugarEntrega" formControlName="lugarEntrega" placeholder="Ej: Aeropuerto de Bogotá" />
-    </div>
+     
+      <div class="col-12">
+        <label for="lugarEntrega" class="form-label">Lugar de entrega</label>
+        <input
+          type="text"
+          id="lugarEntrega"
+          formControlName="lugarEntrega"
+          placeholder="Ej: Aeropuerto de Bogotá"
+          class="form-control"
+          [ngClass]="{'is-invalid': reservaForm.get('lugarEntrega')?.invalid && reservaForm.get('lugarEntrega')?.touched}"
+        />
+        <div class="invalid-feedback">
+          El lugar de entrega es obligatorio y debe tener al menos 3 caracteres.
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="servicio">Servicio</label>
-      <select id="servicio" formControlName="servicio">
-        <option value="">Seleccione un servicio</option>
-        <option *ngFor="let s of servicios" [value]="s.idServicio">
-          {{ s.nombreServicio }} - ${{ s.costo }}
-        </option>
-      </select>
-    </div>
+   
+      <div class="col-12">
+        <label for="servicio" class="form-label">Servicio</label>
+        <select
+          id="servicio"
+          formControlName="servicio"
+          class="form-select"
+          [ngClass]="{'is-invalid': reservaForm.get('servicio')?.invalid && reservaForm.get('servicio')?.touched}"
+        >
+          <option value="">Seleccione un servicio</option>
+          <option *ngFor="let s of servicios" [value]="s.idServicio">
+            {{ s.nombreServicio }} - ${{ s.costo }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          Debe seleccionar un servicio.
+        </div>
+      </div>
 
-    <button type="submit" [disabled]="reservaForm.invalid" class="btn-guardar">
-      Confirmar reserva
-    </button>
-  </form>
+    
+      <div class="col-12 text-center mt-3">
+        <button
+          type="submit"
+          class="btn btn-primary px-4 py-2"
+          [disabled]="reservaForm.invalid">
+          Confirmar reserva
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

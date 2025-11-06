@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +15,17 @@ export class RoleGuard implements CanActivate {
     const userRole = this.authService.getRole();
     const token = this.authService.getToken();
 
-    // Si no está logueado
     if (!token) {
       this.router.navigate(['/login']);
       return false;
     }
 
-    // Si el rol no coincide
     if (userRole !== expectedRole) {
-      alert('No tienes permisos para acceder a esta sección');
+      Swal.fire({
+              icon: 'error',
+              title: 'No tienes permisio para acceder a esta sesion',
+              text: 'Debes iniciar sesión con una cuenta usuario.',
+            });
       this.router.navigate(['/login']);
       return false;
     }
